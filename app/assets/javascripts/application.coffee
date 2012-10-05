@@ -4,7 +4,7 @@
 
 startPos = null
 startTime = null
-activeExercise = 'Bike'
+activeExercise = 'Ride'
 totalTime = 0
 totalDistance = 0
 timer = null
@@ -24,17 +24,17 @@ switchTab = (event)->
   for el in lis
     el.classList.remove('active');
   li.classList.add('active');
-  activeExercise = li.innerHTML;
+  activeExercise = this.innerHTML;
 
 for tab in ['ride', 'run', 'walk']
   $el = $('#' + tab + ' a')
-  $el.on 'click', switchTab
+  if $el
+    $el.on 'click', switchTab
 
 window.onload = ->
   if navigator.geolocation
     navigator.geolocation.getCurrentPosition (position)->
-      if $start
-        $start.classList.remove 'inactive'
+      true
     , (error) ->
       alert "Yeah, it ain't gonna work without geolocation :("
     , { enableHighAccuracy: true }
@@ -54,6 +54,7 @@ displayTime = ->
   timer = setTimeout displayTime, 10
   
 displayDistance = (pos)->
+  # give it a sec to init
   if totalTime < 2000
     startPos = pos.coords
   else
@@ -97,7 +98,7 @@ if $save
   $save.on 'click', (event)->
     event.preventDefault()
     trip =
-      excercise: activeExercise,
+      exercise: activeExercise,
       time: totalTime
       distance: totalDistance
       date: new Date()
@@ -106,31 +107,53 @@ if $save
     localStorage['trips'] = JSON.stringify(trips)
   
     window.location = '/'
+
+timeAsString = (ms)->
+  seconds = ms / 1000
+  minutes = seconds / 60
+  hours = minutes / 60
+  timeString = '';
+  timeString += Math.floor(hours) + 'h ' if hours > 1
+  timeString += Math.floor(minutes) + 'm ' if minutes > 1
+  timeString += Math.floor(seconds) + 's' if minutes < 1
   
+  timeString
+
+distanceAsString = (kms)->
+  kms = Number kms
+  return "<u>nowhere</u>" if kms == 0
+  distanceTotal.toFixed(2) + 'km'
+  
+exercises = {
+  'Ride': 'Rode'
+  'Run': 'Ran'
+  'Walk': 'Walked'
+}
+tripAsString = (trip)->
+  exercises[trip.exercise] + ' ' + distanceAsString(trip.distance) + ' in ' + timeAsString(trip.time)
+
 $logs = $('#logs')
 if $logs
   trips = JSON.parse(localStorage['trips'])
   logs = []
+  timeTotal = 0
+  distanceTotal = 0
   for trip in trips
-    seconds = trip.time / 1000
-    minutes = seconds / 60
-    hours = minutes / 60
-    timeString = '';
-    timeString += Math.floor(hours) + 'h ' if hours > 1
-    timeString += Math.floor(minutes) + 'm ' if minutes > 1
-    timeString += Math.floor(seconds) + 's' if minutes < 1
+    timeTotal += trip.time
+    distanceTotal += Number(trip.distance)
+    timeString = timeAsString(trip.time)
     date = new Date(trip.date)
-    logs.push({
+    logs.push
       date: date.getDate() + ' ' + months[date.getMonth()]
-      time: timeString
-      distance: trip.distance + 'km'
-    })
+      story: tripAsString trip
+
   $logs.innerHTML = tmpl "logs_tmpl", { logs: logs }
+  $time.innerHTML = timeAsString timeTotal
+  $distance.innerHTML = distanceTotal.toFixed(2) + 'km'
 
-
-$clear = $('#clear')
-if $clear
-  $clear.on 'click', (event)->
+$reset = $('#reset')
+if $reset
+  $reset.on 'click', (event)->
     event.preventDefault();
     localStorage['trips'] = JSON.stringify([])
     window.location = '/'

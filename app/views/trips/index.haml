@@ -1,14 +1,14 @@
 .header
+  %a#reset.btn{ href: '#' } Reset
   %h1 Meter
 
 %ul.metrics
   %li
     %strong Time
-    #time 24m
+    #time 0:00
   %li
     %strong Distance
-    #distance 8.4km
-%a#clear{ href: '#' } Clear logs
+    #distance 0.00
 %ul#logs
   
 :plain
@@ -16,11 +16,10 @@
     <% for (var i=0, ii=logs.length; i<ii; i++) { %>
       <li>
         <time><%= logs[i].date %></time>
-        <span class="time"><%= logs[i].time %></span>
-        <span class="distance"><%= logs[i].distance %></span>
+        <%= logs[i].story %>
       </li>
     <% } %>
   </script>
 
 .footer
-  = link_to "New Trip", new_trip_path, class: 'bfb'
+  = link_to "New Trip", new_trip_path, class: 'bfb', onclick: "window.location='#{new_trip_path}'; return false;"
