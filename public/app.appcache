@@ -1,6 +1,8 @@
 CACHE MANIFEST
-/
-/trips/new
 /assets/application.css
 /assets/application.js
 /assets/pattern.jpg
+
+NETWORK
+/
+/trips/new

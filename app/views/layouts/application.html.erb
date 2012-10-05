@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" manifest="/app.appcache">
 <head>
   <title>Meter</title>
   <%= stylesheet_link_tag "application", :media => "all" %>
@@ -7,12 +7,12 @@
   <meta name="viewport" content="initial-scale=1.0, width=device-width">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black">
-  <link rel="shortcut icon" type="image/x-icon" href: "/favicon.ico">
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
   <link rel="apple-touch-startup-image" href="/startup-320x460.png">
-  <link rel="apple-touch-icon-precomposed" sizes: "144x144" href="/apple-touch-icon-144x144.png">
-  <link rel="apple-touch-icon-precomposed" sizes: "114x114" href="/apple-touch-icon-114x114.png">
-  <link rel="apple-touch-icon-precomposed" sizes: "72x72"   href="/apple-touch-icon-72x72.png">
-  <link rel="apple-touch-icon-precomposed"                  href="/apple-touch-icon-57x57.png">
+  <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon-144x144.png" sizes="144x144">
+  <link rel="apple-touch-icon-precomposed" sizes="114x114" href="/apple-touch-icon-114x114.png" sizes="114x114">
+  <link rel="apple-touch-icon-precomposed" sizes="72x72"   href="/apple-touch-icon-72x72.png" sizes="72x72">
+  <link rel="apple-touch-icon-precomposed"                 href="/apple-touch-icon-57x57.png">
 </head>
 <body <%= params[:action_name] %>>
 <%= yield %>
