@@ -8,13 +8,17 @@ activeExercise = 'Ride'
 totalTime = 0
 totalDistance = 0
 timer = null
+watcher = null
 $time = $("#time")
 $distance = $("#distance")
 $body = document.body
+emptyFn = ->
+months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct','Nov', 'Dec']
+  
 if !localStorage['trips']
   localStorage['trips'] = JSON.stringify([])
 trips = JSON.parse(localStorage['trips']) || []
-months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct','Nov', 'Dec']
+
 
 switchTab = (event)->
   event.preventDefault()
@@ -34,7 +38,7 @@ for tab in ['ride', 'run', 'walk']
 window.onload = ->
   if navigator.geolocation
     navigator.geolocation.getCurrentPosition (pos)->
-      true
+      startPos = pos.coords
     , (error) ->
       alert "Yeah, it ain't gonna work without geolocation :("
     , { enableHighAccuracy: true }
@@ -53,15 +57,10 @@ displayTime = ->
   $time.innerHTML = "#{minutes}:#{seconds}"
   timer = setTimeout displayTime, 10
   
-startPosSet = false
 displayDistance = (pos)->
-  if !startPosSet && (new Date().getTime() - startTime) < 2000
-    startPosSet = true
-    startPos = pos.coords
-    return
-  else
-    newPos = pos.coords
-    $distance.innerHTML = calculateDistance startPos.latitude, startPos.longitude, newPos.latitude, newPos.longitude
+  newPos = pos.coords
+  totalDistance = calculateDistance startPos.latitude, startPos.longitude, newPos.latitude, newPos.longitude
+  $distance.innerHTML = totalDistance
 
 calculateDistance = (lat1, lon1, lat2, lon2)->
   R = 6371; # km
@@ -80,22 +79,22 @@ if $start
   $start.on 'click', (event)->
     event.preventDefault()
     $start.innerHTML = if $start.innerHTML != 'Pause' then 'Pause' else 'Continue'
-  
-    if timer
+    
+    if !timer
+      startTime = new Date().getTime()
+      displayTime()
+      watcher = navigator.geolocation.watchPosition displayDistance
+      $body.classList.add 'running'
+      $body.classList.remove 'complete'
+    else
       clearTimeout timer
       totalTime += new Date().getTime() - startTime;
       timer = null
-      navigator.geolocation.clearWatch watcher
+      navigator.geolocation.clearWatch watcher, (error) ->
+        alert "Yeah, it ain't gonna work without geolocation :("
+      , { enableHighAccuracy: true }
       $body.classList.remove 'running'
       $body.classList.add 'complete'
-    else
-      startTime = new Date().getTime()
-      displayTime()
-      watcher = navigator.geolocation.watchPosition displayDistance, ->
-        true
-      , { enableHighAccuracy: true }
-      $body.classList.add 'running'
-      $body.classList.remove 'complete'
 
 $save = $('#save')
 if $save
@@ -106,10 +105,9 @@ if $save
       time: totalTime
       distance: totalDistance
       date: new Date()
-  
     trips.push trip
     localStorage['trips'] = JSON.stringify(trips)
-  
+    
     window.location = '/'
 
 timeAsString = (ms)->

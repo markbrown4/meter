@@ -7,5 +7,5 @@ window.$ = (selector)->
   else
     false
 
-Number.prototype.toRad = ()->
-  return this * Math.PI / 180;
+Number::toRad = ->
+  this * Math.PI / 180

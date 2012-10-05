@@ -13,10 +13,10 @@
   
 :plain
   <script type="text/html" id="logs_tmpl">
-    <% for (var i=0, ii=logs.length; i<ii; i++) { %>
+    <% for (var i=logs.length; i>0; i--) { %>
       <li>
-        <time><%= logs[i].date %></time>
-        <%= logs[i].story %>
+        <time><%= logs[i-1].date %></time>
+        <%= logs[i-1].story %>
       </li>
     <% } %>
     <% if (logs.length == 0) { %>
