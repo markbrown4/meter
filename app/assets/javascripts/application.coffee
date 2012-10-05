@@ -61,8 +61,7 @@ displayDistance = (pos)->
     return
   else
     newPos = pos.coords
-    totalDistance = calculateDistance startPos.latitude, startPos.longitude, newPos.latitude, newPos.longitude
-    $distance.innerHTML = totalDistance
+    $distance.innerHTML = calculateDistance startPos.latitude, startPos.longitude, newPos.latitude, newPos.longitude
 
 calculateDistance = (lat1, lon1, lat2, lon2)->
   R = 6371; # km
@@ -80,7 +79,7 @@ $start = $('#start')
 if $start
   $start.on 'click', (event)->
     event.preventDefault()
-    $start.innerHTML = if $start.innerHTML == 'Start' then 'Pause' else 'Start'
+    $start.innerHTML = if $start.innerHTML != 'Pause' then 'Pause' else 'Continue'
   
     if timer
       clearTimeout timer
@@ -125,7 +124,7 @@ timeAsString = (ms)->
 distanceAsString = (kms)->
   kms = Number kms
   return "<u>nowhere</u>" if kms == 0
-  distanceTotal.toFixed(2) + 'km'
+  kms.toFixed(2) + 'km'
   
 exercises = {
   'Ride': 'Rode'

@@ -19,7 +19,10 @@
         <%= logs[i].story %>
       </li>
     <% } %>
+    <% if (logs.length == 0) { %>
+    <li class="no-logs">Get on your bike, fat bastard.</li>
+    <% } %>
   </script>
 
 .footer
-  = link_to "New Trip", new_trip_path, class: 'bfb', onclick: "window.location='#{new_trip_path}'; return false;"
+  = link_to "Do it, do it now.", new_trip_path, class: 'bfb', onclick: "window.location='#{new_trip_path}'; return false;"

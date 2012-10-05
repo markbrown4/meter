@@ -113,7 +113,11 @@ th { text-align: left }
     &:not(:last-child) {
       border-bottom: 1px solid rgba(#000, .1);
     }
+    &.no-logs {
+      text-align: center;
+    }
   }
+  
 }
 .activities {
   display: table;
@@ -201,10 +205,15 @@ th { text-align: left }
 }
 
 .inactive { opacity: .5 }
-#save { opacity: 0 }
+#save {
+  opacity: 0;
+  height: 0;
+  overflow: hidden;
+}
 
 .complete {
-  #save { opacity: 1 }
+  #save { opacity: 1; height: 64px }
+  #start { opacity: .5 }
 }
 .running, .complete {
   .activities {
