@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Meter</title>
+  <%= stylesheet_link_tag "application", :media => "all" %>
+  <%= csrf_meta_tags %>
+  <meta name="viewport" content="initial-scale=1.0, width=device-width">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+</head>
+<body <%= params[:action_name] %>>
+<%= yield %>
+<%= javascript_include_tag "application" %>
+</body>
+</html>

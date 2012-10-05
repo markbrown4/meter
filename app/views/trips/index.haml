@@ -1,0 +1,26 @@
+.header
+  %h1 Meter
+
+%ul.metrics
+  %li
+    %strong Time
+    #time 24m
+  %li
+    %strong Distance
+    #distance 8.4km
+%a#clear{ href: '#' } Clear logs
+%ul#logs
+  
+:plain
+  <script type="text/html" id="logs_tmpl">
+    <% for (var i=0, ii=logs.length; i<ii; i++) { %>
+      <li>
+        <time><%= logs[i].date %></time>
+        <span class="time"><%= logs[i].time %></span>
+        <span class="distance"><%= logs[i].distance %></span>
+      </li>
+    <% } %>
+  </script>
+
+.footer
+  = link_to "New Trip", new_trip_path, class: 'bfb'

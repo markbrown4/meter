@@ -1,0 +1,21 @@
+.header
+  %h1 Trip
+  = link_to "Back", trips_path, class: 'btn', onclick: "window.location='#{trips_path}'; return false;"
+
+%ul.activities
+  %li#ride.active= link_to "Ride", "#"
+  %li#run= link_to "Run", "#"
+  %li#walk= link_to "Walk", "#"
+
+%ul.metrics
+  %li
+    %strong Time
+    #time 0:00
+  %li
+    %strong Distance (km)
+    #distance 0.00
+  
+= link_to "Save Trip", "#", class: 'bfb', id: 'save'
+
+.footer
+  = link_to "Start", "#", class: 'bfb inactive', id: 'start'
