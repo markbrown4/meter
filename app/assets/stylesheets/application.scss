@@ -204,9 +204,15 @@ th { text-align: left }
 #save { opacity: 0 }
 
 .complete {
-  .activities { display: none }
   #save { opacity: 1 }
 }
-.running {
-  .activities { display: none }
+.running, .complete {
+  .activities {
+    li { display: none }
+    li.active {
+      display: block;
+      width: 100%;
+      @include below-mod;
+    }
+  }
 }

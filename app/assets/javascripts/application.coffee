@@ -33,7 +33,7 @@ for tab in ['ride', 'run', 'walk']
 
 window.onload = ->
   if navigator.geolocation
-    navigator.geolocation.getCurrentPosition (position)->
+    navigator.geolocation.getCurrentPosition (pos)->
       true
     , (error) ->
       alert "Yeah, it ain't gonna work without geolocation :("
@@ -53,10 +53,12 @@ displayTime = ->
   $time.innerHTML = "#{minutes}:#{seconds}"
   timer = setTimeout displayTime, 10
   
+startPosSet = false
 displayDistance = (pos)->
-  # give it a sec to init
-  if totalTime < 2000
+  if !startPosSet && (new Date().getTime() - startTime) < 2000
+    startPosSet = true
     startPos = pos.coords
+    return
   else
     newPos = pos.coords
     totalDistance = calculateDistance startPos.latitude, startPos.longitude, newPos.latitude, newPos.longitude
@@ -84,12 +86,13 @@ if $start
       clearTimeout timer
       totalTime += new Date().getTime() - startTime;
       timer = null
+      navigator.geolocation.clearWatch watcher
       $body.classList.remove 'running'
       $body.classList.add 'complete'
     else
       startTime = new Date().getTime()
       displayTime()
-      navigator.geolocation.watchPosition displayDistance
+      watcher = navigator.geolocation.watchPosition displayDistance
       $body.classList.add 'running'
       $body.classList.remove 'complete'
 
@@ -98,7 +101,7 @@ if $save
   $save.on 'click', (event)->
     event.preventDefault()
     trip =
-      exercise: activeExercise,
+      exercise: activeExercise
       time: totalTime
       distance: totalDistance
       date: new Date()
@@ -140,9 +143,9 @@ if $logs
   distanceTotal = 0
   for trip in trips
     timeTotal += trip.time
-    distanceTotal += Number(trip.distance)
-    timeString = timeAsString(trip.time)
-    date = new Date(trip.date)
+    distanceTotal += Number trip.distance
+    timeString = timeAsString trip.time
+    date = new Date trip.date
     logs.push
       date: date.getDate() + ' ' + months[date.getMonth()]
       story: tripAsString trip
