@@ -1,6 +1,6 @@
 .header
   %h1 Trip
-  = link_to "Back", trips_path, class: 'btn', onclick: "window.location='#{trips_path}'; return false;"
+  = link_to "Back", trips_path, class: 'left btn', onclick: "window.location='#{trips_path}'; return false;"
 
 %ul.activities
   %li#ride.active= link_to "Ride", "#"
