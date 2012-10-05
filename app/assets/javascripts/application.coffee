@@ -73,7 +73,7 @@ calculateDistance = (lat1, lon1, lat2, lon2)->
   c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
   distance = R * c;
 
-  distance.toFixed(2)
+  distance.toFixed 2
 
 $start = $('#start')
 if $start
@@ -91,7 +91,9 @@ if $start
     else
       startTime = new Date().getTime()
       displayTime()
-      watcher = navigator.geolocation.watchPosition displayDistance
+      watcher = navigator.geolocation.watchPosition displayDistance, ->
+        true
+      , { enableHighAccuracy: true }
       $body.classList.add 'running'
       $body.classList.remove 'complete'
 
