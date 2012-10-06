@@ -14,3 +14,13 @@
 @mixin sheen($color){
   @include background-with-css2-fallback(linear-gradient(top, rgba(white, .15), rgba(white, .13) 50%, rgba(black, 0) 50%, rgba(black, .05) 100%), $color);
 }
+
+@mixin icons-sprite-2x($sprite) {
+  $sprites: sprite-map("icons/*.png");
+  text-indent: -9999px !important;
+  @include icons-sprite($sprite);
+  background-position: 0 round(nth(sprite-position($sprites, $sprite), 2) / 2);
+  height: image-height(sprite-file($sprites, $sprite)) / 2;
+  width: image-width(sprite-file($sprites, $sprite)) / 2;
+  background-size: 24px auto;
+}

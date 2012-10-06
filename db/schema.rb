@@ -11,6 +11,25 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 0) do
+ActiveRecord::Schema.define(:version => 20121006005404) do
+
+  create_table "locations", :force => true do |t|
+    t.float  "lat"
+    t.float  "lng"
+    t.string "street_name"
+    t.string "city"
+    t.string "zip"
+  end
+
+  create_table "trips", :force => true do |t|
+    t.string   "activity"
+    t.integer  "milliseconds"
+    t.float    "kilometers"
+    t.integer  "start_location_id"
+    t.integer  "end_location_id"
+    t.text     "data"
+    t.datetime "created_at",        :null => false
+    t.datetime "updated_at",        :null => false
+  end
 
 end

@@ -4,6 +4,7 @@ gem 'rails', '3.2.8'
 gem 'pg'
 gem 'haml-rails'
 gem 'rack-offline'
+gem 'decent_exposure'
 
 group :assets do
   gem 'sass-rails',   '~> 3.2.3'

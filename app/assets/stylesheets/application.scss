@@ -4,6 +4,9 @@
 
 @import 'common';
 
+$disable-magic-sprite-selectors: true;
+@import "icons/*.png";
+
 html { -webkit-text-size-adjust: none }
 html, body {
   margin: 0;
@@ -125,7 +128,6 @@ th { text-align: left }
   padding: 0;
   margin: 0;
   margin-bottom: 20px;
-  height: 44px;
   overflow: hidden;
   li {
     display: table-cell;
@@ -140,18 +142,27 @@ th { text-align: left }
     &.active {
       @include above-mod;
       a {
+        padding: 10px;
         color: #545862;
         text-shadow: none;
+        &:before { opacity: .8 }
       }
     }
   }
   a {
     display: block;
-    height: 44px;
-    line-height: 44px;
+    line-height: 1;
     color: #947711;
-    
+    &:before {
+      content: '';
+      display: block;
+      margin: 0 auto 10px;
+      opacity: .5;
+    }
   }
+  #ride a:before { @include icons-sprite-2x('ride') }
+  #run  a:before { @include icons-sprite-2x('run')  }
+  #walk a:before { @include icons-sprite-2x('walk') }
 }
 
 .metrics {
@@ -220,7 +231,12 @@ th { text-align: left }
       display: block;
       width: 100%;
       @include below-mod;
-      a { color: #947711 }
+      height: 44px;
+      overflow: hidden;
+      a {
+        line-height: 2;
+        color: #947711
+      }
     }
   }
 }

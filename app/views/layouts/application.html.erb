@@ -14,7 +14,7 @@
   <link rel="apple-touch-icon-precomposed" sizes="72x72"   href="/apple-touch-icon-72x72.png" sizes="72x72">
   <link rel="apple-touch-icon-precomposed"                 href="/apple-touch-icon-57x57.png">
 </head>
-<body <%= params[:action_name] %>>
+<body class="<%= params[:action] %>">
 <%= yield %>
 <%= javascript_include_tag "application" %>
 </body>

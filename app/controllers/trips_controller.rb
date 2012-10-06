@@ -1,9 +1,6 @@
 class TripsController < ApplicationController
 
-  def index
-  end
-
-  def new
-  end
+  expose(:trips) { Trip.all }
+  expose(:trip)
 
 end

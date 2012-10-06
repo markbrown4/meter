@@ -1,0 +1,16 @@
+.header
+  %h1 Trips of All Time
+  %a#reset{ href: '#', class: 'right btn' } Reset
+
+%ul#logs
+  - for trip in trips
+    %li
+      %time= trip.created_at
+      = trip.milliseconds
+      = trip.kilometers
+
+  - if trips.length == 0
+    %li.no-logs There's a lot of fat bastards.
+
+.footer
+  = link_to "Do it, do it now.", new_trip_path, class: 'bfb', onclick: "window.location='#{new_trip_path}'; return false;"
