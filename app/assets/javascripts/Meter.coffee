@@ -1,5 +1,5 @@
 class @Meter
-  startPos: null
+  startPos: false
   startTime: null
   milliseconds: 0
   kilometers: 0
@@ -9,10 +9,10 @@ class @Meter
 
   constructor: ->
     @log = new Log()
-    @captureStartPos()
     @initActivityTabs()
 
   toggle: (event)=>
+    event.preventDefault()
     if !@timer
       @start()
       $('#start').innerHTML = 'Pause'
@@ -24,7 +24,7 @@ class @Meter
     @startTime = new Date().getTime()
     @watcher = navigator.geolocation.watchPosition @displayDistance, (error) ->
       alert "Sheeyat!"
-    , { enableHighAccuracy: true }
+    , { enableHighAccuracy: true, maximumAge: 30000, timeout: 27000 }
     @displayTime()
     
     $body.classList.add 'running'
@@ -64,15 +64,6 @@ class @Meter
     li.classList.add 'active'
     @activity = a.innerHTML
 
-  captureStartPos: =>
-    if navigator.geolocation
-      navigator.geolocation.getCurrentPosition (pos)=>
-        @startPos = pos.coords
-        $('#start').classList.remove 'inactive'
-      , (error) ->
-        alert "Yeah, it ain't gonna work without geolocation :("
-      , { enableHighAccuracy: true }
-
   displayTime: ->
     ms = @milliseconds + new Date().getTime() - @startTime
     x = ms / 1000
@@ -94,8 +85,11 @@ class @Meter
   displayDistance: (pos)=>
     newPos = pos.coords
     if newPos.accuracy < 100
-      @kilometers = @calculateDistance @startPos.latitude, @startPos.longitude, newPos.latitude, newPos.longitude
-      $('#distance').innerHTML = @kilometers.toFixed 2
+      if !@startPos
+        @startPos = newPos
+      else
+        @kilometers = @calculateDistance @startPos.latitude, @startPos.longitude, newPos.latitude, newPos.longitude
+        $('#distance').innerHTML = @kilometers.toFixed 2
 
   calculateDistance: (lat1, lon1, lat2, lon2)->
     R = 6371; # km
