@@ -68,7 +68,6 @@ class @Meter
     if navigator.geolocation
       navigator.geolocation.getCurrentPosition (pos)=>
         @startPos = pos.coords
-        alert @startPos.accuracy
         $('#start').classList.remove 'inactive'
       , (error) ->
         alert "Yeah, it ain't gonna work without geolocation :("
