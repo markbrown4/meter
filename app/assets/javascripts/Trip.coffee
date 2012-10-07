@@ -9,6 +9,7 @@ class @Trip
     @activity = options.activity
     @milliseconds = options.milliseconds
     @kilometers = options.kilometers
+    @data = options.data
     @datetime = new Date()
 
   toString: ->

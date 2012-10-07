@@ -1,10 +1,9 @@
 class @Meter
-  startPos: false
-  startTime: null
+  checkpointPos: false
   milliseconds: 0
   kilometers: 0
+  data: []
   timer: false
-  watcher: null
   activity: 'Ride'
 
   constructor: ->
@@ -24,17 +23,28 @@ class @Meter
     @startTime = new Date().getTime()
     @watcher = navigator.geolocation.watchPosition @displayDistance, (error) ->
       alert "Sheeyat!"
-    , { enableHighAccuracy: true, maximumAge: 30000, timeout: 27000 }
+    , { enableHighAccuracy: true }
+    
+    @checkpointInterval = setInterval @checkpoint, 20000
     @displayTime()
     
     $body.classList.add 'running'
     $body.classList.remove 'complete'
 
+  checkpoint: =>
+    @data.push [@currentPos.latitude, @currentPos.longitude]
+    @kilometers += @calculateDistance @checkpointPos.latitude, @checkpointPos.longitude, @currentPos.latitude, @currentPos.longitude
+    @checkpointPos = @currentPos
+
   stop: ->
     clearTimeout @timer
+    clearInterval @checkpointInterval
+    navigator.geolocation.clearWatch @watcher
+    
     @timer = false
     @milliseconds += new Date().getTime() - @startTime;
-    navigator.geolocation.clearWatch @watcher
+    @checkpoint()
+    $('#distance').innerHTML = @kilometers.toFixed 2
     
     $body.classList.remove 'running'
     $body.classList.add 'complete'
@@ -45,6 +55,7 @@ class @Meter
       activity: @activity
       milliseconds: @milliseconds
       kilometers: @kilometers
+      data: @data
     @log.saveTrip trip
     
     window.location = '/'
@@ -83,13 +94,12 @@ class @Meter
     true
 
   displayDistance: (pos)=>
-    newPos = pos.coords
-    if newPos.accuracy < 100
-      if !@startPos
-        @startPos = newPos
-      else
-        @kilometers = @calculateDistance @startPos.latitude, @startPos.longitude, newPos.latitude, newPos.longitude
-        $('#distance').innerHTML = @kilometers.toFixed 2
+    @currentPos = pos.coords
+    if !@checkpointPos
+      @checkpointPos = @currentPos
+    else
+      distanceFromCheckpoint = @calculateDistance @checkpointPos.latitude, @checkpointPos.longitude, @currentPos.latitude, @currentPos.longitude
+      $('#distance').innerHTML = (@kilometers + distanceFromCheckpoint).toFixed 2
 
   calculateDistance: (lat1, lon1, lat2, lon2)->
     R = 6371; # km

@@ -14,10 +14,11 @@ class @Log
 
   reset: (event)=>
     event.preventDefault();
-    @trips = []
-    localStorage['trips'] = JSON.stringify @trips
-    window.location = '/'
-  
+    if confirm('Are you sure you want to reset your trips?')
+      @trips = []
+      localStorage['trips'] = JSON.stringify []
+      @render()
+
   render: ->
     logData = []
     millisecondsTotal = 0

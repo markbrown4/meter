@@ -6,8 +6,13 @@
 #= require Trip
 
 window.$body = document.body
+window.onerror = (msg, url, line) ->
+  alert "#{line}: #{msg}"
 
 window.onload = ->
+  setTimeout ->
+    window.scrollTo 0, 1
+  , 1
   switch document.body.className
 
     when "index"

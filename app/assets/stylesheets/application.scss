@@ -10,13 +10,14 @@ $disable-magic-sprite-selectors: true;
 html { -webkit-text-size-adjust: none }
 html, body {
   margin: 0;
+  padding: 0;
 }
 body {
   font: 16px/24px Calibri,sans-serif;
   background: #EDC435 image-url("pattern.jpg") repeat fixed 0 0;
   color: #947711;
   text-shadow: 0 1px 0 rgba(#fff, .3);
-  padding: 75px 15px 95px;
+  padding: 75px 15px 175px;
 }
 h1,h2,h3 {
   margin: 1em 0;
