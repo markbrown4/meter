@@ -10,3 +10,8 @@ At the moment it's just calculating a distance from start to end.
 - Make it work offline
 - Persist data when online
 - Fastclicks
+
+## testing
+
+    $ alias jasmine=‘bundle exec jasmine-headless-webkit –color’
+    $ jasmine
